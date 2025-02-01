@@ -1,0 +1,13 @@
+
+
+static int phase_current_sampling(mc_motor_typedef *tmotor); 函数中设置了一些简单的保护，使用时可能要修改。
+sensor_mode 默认使用无感模式
+control_mode 默认使用速度模式
+
+demo上电校准后进入停止模式MC_STATE_STOP。
+按下K1是使能/失能（绿灯闪烁使能）。
+辨识前需给正确的极对数 （变量为 tconfig->motor_pole_pairs），辨识时电机要能自由转动；
+辨识时需要在停止模式下MC_STATE_STOP，见 MC_State_Process_Set 函数；
+K2是校准模式MC_STATE_DETECTING（白灯闪烁），自动辨识电阻、电感、磁链、转动惯量，并自整定电流环速度环参数，目前参数不进行自动保存。
+
+校准完成后，按下K1使能，调整电位器至最低电位后（在Soft_Timer1_Callback中），就可通过电位器来调整速度。
