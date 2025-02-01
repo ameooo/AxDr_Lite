@@ -1,0 +1,23 @@
+
+
+
+# 忽略 .a 文件
+*.amoeee
+*.log
+*.bat
+*.d
+*.o
+*.crf
+*.dep
+*.map
+*.lst
+*ini
+
+# 仅在当前目录下忽略 TODO 文件， 但不包括子目录下的 subdir/TODO
+MDK-ARM/.vscode
+
+# 忽略 build/ 文件夹
+MGESC_AxDr_v2.0/
+DebugConfig/
+# Listings/
+RTE/
