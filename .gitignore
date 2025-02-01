@@ -19,5 +19,4 @@ MDK-ARM/.vscode
 # 忽略 build/ 文件夹
 MGESC_AxDr_v2.0/
 DebugConfig/
-# Listings/
 RTE/
