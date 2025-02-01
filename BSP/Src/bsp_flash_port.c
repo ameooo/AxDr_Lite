@@ -3,44 +3,11 @@
  * @Date: 2025-01-24 19:17:55
  * @Author: 弈秋
  * @FirmwareVersion: v1.0.0.0
- * @LastEditTime: 2025-01-24 21:44:15
+ * @LastEditTime: 2025-02-02 00:09:14
  * @LastEditors: 弈秋仙贝
  */
 
 #include "bsp_flash_port.h"
-
-// uint32_t FirstPage = 0, NbOfPages = 0;
-// uint32_t Address = 0, PageError = 0;
-// __IO uint32_t MemoryProgramStatus = 0;
-// __IO uint32_t data32 = 0;
-
-// FLASH_EraseInitTypeDef EraseInitStruct;
-
-// static uint32_t GetPage(uint32_t Addr)
-// {
-//     return (Addr - FLASH_BASE_ADDR) / FLASH_PAGE_SIZE;
-//     ;
-// }
-
-// void bsp_flash_write(uint32_t addr, uint32_t *data)
-// {
-//     HAL_FLASH_Unlock();
-//     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_OPTVERR);
-
-//     FirstPage = GetPage(addr);
-//     NbOfPages = GetPage(addr) - FirstPage + 1;
-
-//     /* Fill EraseInit structure*/
-//     EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
-//     EraseInitStruct.Page = FirstPage;
-//     EraseInitStruct.NbPages = NbOfPages;
-//     HAL_FLASHEx_Erase(&EraseInitStruct, &PageError);
-//     FLASH_PageErase(63, FLASH_BANK_1);
-
-//     HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, Address, data);
-
-//     HAL_FLASH_Lock();
-// }
 
 /*
 *********************************************************************************************************

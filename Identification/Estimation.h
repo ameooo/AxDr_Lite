@@ -3,7 +3,7 @@
  * @Date: 2025-01-31 14:54:10
  * @Author: 弈秋仙贝
  * @FirmwareVersion: v1.0.0.0
- * @LastEditTime: 2025-01-31 22:12:01
+ * @LastEditTime: 2025-02-01 20:23:28
  * @LastEditors: 弈秋仙贝
  */
 
@@ -16,15 +16,17 @@
 #define EST_FREQ (20000.0f)          // 固定20kHz [Hz]
 #define EST_PERIOD (1.0f / EST_FREQ) // 50us
 
+// 辨识使用参数
+// #define CALIBRATION_CURRENT 8.0f // [A] 校准电流，这里实际使用设置中的 calibrate_current
+// #define MAX_VOLTAGE 24.0f        // [V] 母线电压，这里实际使用采样电压 vbus_filter
+#define EST_SPEED 500.0f // 磁链辨识的速度 [rpm]
+
 // 电感辨识的注入信号配置。测量数据相比电桥偏大，可能是死区的原因
 #define INJ_FREQ 1000.0f                       // 正弦电流注入频率，频率不同阻抗也不一样
 #define SAMPLE_FREQ 20000.0f                   // 采样频率
 #define INJ_BY_SAMPLE (INJ_FREQ / SAMPLE_FREQ) // 每个采样点注入的电流周期数
 #define SAMPLE_SIZE 200                        // SAMPLE_SIZE * INJ_BY_SAMPLE需要为整数且>=10
 #define BANDPASS_FLAG 0                        // 开启带通滤波器
-
-// 磁链辨识的速度
-#define EST_SPEED 500.0f // [rpm]
 
 // 环路计算参照Ti手册。自整定的带宽需要给小一些。
 #define LOOP_DAMP 5.0f         // 环路阻尼系数

@@ -3,7 +3,7 @@
  * @Date: 2025-01-13 19:01:43
  * @Author: 弈秋
  * @FirmwareVersion: v1.0.0.0
- * @LastEditTime: 2025-01-24 02:00:13
+ * @LastEditTime: 2025-02-01 20:22:13
  * @LastEditors: 弈秋仙贝
  */
 
@@ -73,10 +73,10 @@ void flux_observer(mc_motor_typedef *tmotor)
     PhiActiveB = PhiVoltB;
     tobserver->theta = fast_atan2(PhiActiveB, PhiActiveA);
 #elif FLUX_OBSERVER_V2
-	float PhiCurrD, PhiCurrQ; // d-q电流φ
+    float PhiCurrD, PhiCurrQ; // d-q电流φ
     float PhiCurrA, PhiCurrB; // α-β电流φ
     float PhiErrA, PhiErrB;   // α-β误差φ
-	
+
     PhiVoltA += (tmotor->foc.v_alpha - tobserver->Rs * tobserver->Ialpha_filter + tobserver->Err_alpha) * tobserver->dt;
     PhiVoltB += (tmotor->foc.v_beta - tobserver->Rs * tobserver->Ibeta_filter + tobserver->Err_beta) * tobserver->dt;
 
@@ -147,7 +147,6 @@ void flux_observer(mc_motor_typedef *tmotor)
     tobserver->estimate_mech_vel = tobserver->estimate_elec_vel / tmotor->config.motor_pole_pairs;
 }
 
-
 void scvm_observer_init(mc_motor_typedef *tmotor)
 {
     tmotor->scvm.lambda = 2.0f;
@@ -160,8 +159,8 @@ void scvm_observer_init(mc_motor_typedef *tmotor)
 
 /**
  * @brief 开环观测器，效果一般，优点是零速启动不用调参
- *        
- * @param tmotor 
+ *
+ * @param tmotor
  */
 void scvm_observer_updata(mc_motor_typedef *tmotor)
 {
@@ -173,8 +172,9 @@ void scvm_observer_updata(mc_motor_typedef *tmotor)
     tscvm->emf_q = tmotor->foc.vq - tmotor->config.motor_rs * tmotor->foc.iq_ref;
     tscvm->theta += CURRENT_CONTROL_PERIOD * tscvm->omega;
     tscvm->omega += CURRENT_CONTROL_PERIOD * tscvm->alpha_lpf *
-                       (((tscvm->emf_q - lambda_s * tscvm->emf_d) /
-                        (tmotor->config.motor_flux_linkage)) - tscvm->omega);
+                    (((tscvm->emf_q - lambda_s * tscvm->emf_d) /
+                      (tmotor->config.motor_flux_linkage)) -
+                     tscvm->omega);
     utils_norm_angle_rad(&tscvm->theta);
     UTILS_LP_FAST(tscvm->estimate_elec_vel, tscvm->omega, 0.3f);
     tscvm->estimate_mech_vel = tscvm->estimate_elec_vel / tmotor->config.motor_pole_pairs;

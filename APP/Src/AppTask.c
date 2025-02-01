@@ -179,7 +179,6 @@ static void Soft_Timer1_Callback(void *user_data)
     float speed = 0.0f;
     if (MCState == MC_STATE_RUNNING)
     {
-        speed = (CurrentPR - 195) * 0.000256f * 3000.0f * RPM2RADPS; 
         if (CurrentPR <= 300)
         {
             PR_state = 0;
@@ -191,6 +190,7 @@ static void Soft_Timer1_Callback(void *user_data)
             {
                 return;
             }
+			speed = (CurrentPR - 195) * 0.000256f * 3000.0f * RPM2RADPS; 
             MC_SetControlMode(MOTOR_CONTROL_MODE_VELOCITY_RAMP, speed);
         }
         else

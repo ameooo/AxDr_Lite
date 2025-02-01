@@ -3,7 +3,7 @@
  * @Date: 2025-01-21 22:26:23
  * @Author: 弈秋
  * @FirmwareVersion: v1.0.0.0
- * @LastEditTime: 2025-01-31 22:17:50
+ * @LastEditTime: 2025-02-01 20:32:06
  * @LastEditors: 弈秋仙贝
  */
 #include "lcd.h"
@@ -11,7 +11,7 @@
 
 void display(void)
 {
-	LCD_ShowString(10, 5, (uint8_t *)"[V_Beta1.0]", GREEN, BLACK, 32, 0);
+	LCD_ShowString(10, 5, (uint8_t *)"[v_beta_1.0]", GREEN, BLACK, 32, 0);
 
 	LCD_DrawLine(10, 40 - 2, 10, 134, WHITE);
 	LCD_DrawLine(230, 40 - 2, 230, 135, WHITE);

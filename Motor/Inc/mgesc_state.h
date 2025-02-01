@@ -121,18 +121,18 @@ typedef struct
 	float mech_pos;
 } motor_encoder_typedef;
 
-typedef struct
-{
+// typedef struct
+// {
 	// motor_calibration_mode_e calib_mode;
-	motor_calibration_state_e calib_state;
+	// motor_calibration_state_e calib_state;
 
-	uint16_t meas_step;
-	uint32_t calib_count;
+	// uint16_t meas_step;
+	// uint32_t calib_count;
 
 	// calibrate Rs
 	// float calib_current;
-	float calib_voltage_d;
-	float calib_vd_half;
+	// float calib_voltage_d;
+	// float calib_vd_half;
 
 	// // calibrate Ld Lq
 	// float current_magnitude;
@@ -149,7 +149,7 @@ typedef struct
 	// // calibrate flux
 	// float meas_flux_current;
 	// float meas_flux_velocity;
-} motor_calibrate_typedef;
+// } motor_calibrate_typedef;
 
 typedef struct
 {

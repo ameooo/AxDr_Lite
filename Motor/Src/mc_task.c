@@ -3,7 +3,7 @@
  * @Date: 2024-10-26 14:57:40
  * @Author: 弈秋
  * @FirmwareVersion: v1.0.0.0
- * @LastEditTime: 2025-01-31 22:16:26
+ * @LastEditTime: 2025-02-01 20:27:46
  * @LastEditors: 弈秋仙贝
  */
 
@@ -37,12 +37,12 @@ static void TIM_CCxNChannelCmd(TIM_TypeDef *TIMx, uint32_t Channel, uint32_t Cha
 mc_motor_typedef mc_motor;
 
 // 电机错误状态
-uint8_t pos_sensor_flag = 0;
-uint8_t current_sensor_flag = 0;
-uint8_t volt_over_flag = 0; // 这里使用24V，其他电压需要修改
-uint8_t current_over_flag = 0;
-uint8_t current_runaway_flag = 0;
-uint8_t speed_runaway_flag = 0;
+uint8_t pos_sensor_flag = 0;      // 位置传感器故障
+uint8_t current_sensor_flag = 0;  // 电流传感器故障
+uint8_t volt_over_flag = 0;       // 电压过压欠压，还未完善这里需要按实际使用电压修改
+uint8_t current_over_flag = 0;    // 电流过流
+uint8_t current_runaway_flag = 0; // 电流失控
+uint8_t speed_runaway_flag = 0;   // 速度失控
 
 /**
  * @brief 电机初始化
@@ -147,12 +147,14 @@ int MC_State_Process_Set(mc_state_e state)
         if (tmotor->mc_state == MC_STATE_IDLE)
         {
             mc_pwm_enable();
+            tmotor->calib_state = CALIBRATE_START;
             tmotor->mc_state = MC_STATE_DETECTING;
         }
         else if (tmotor->mc_state == MC_STATE_STOP)
         {
             mc_timer_start();
             mc_pwm_enable();
+            tmotor->calib_state = CALIBRATE_START;
             tmotor->mc_state = MC_STATE_DETECTING;
         }
         else
@@ -272,7 +274,7 @@ void MC_SetControlMode(motor_control_mode_e mode, float input)
     case MOTOR_CONTROL_MODE_CURRENT_OPENLOOP:
         set_controller_open_mode(&mc_motor, mode, input, 0.0f, 0.0f, 0.0f);
         break;
-    
+
     default:
         break;
     }
