@@ -583,25 +583,25 @@
               <FileType>1</FileType>
               <FilePath>..\Motor\Src\user_config.c</FilePath>
             </File>
+            <File>
+              <FileName>calibration.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Motor\Src\calibration.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Identification</GroupName>
           <Files>
             <File>
-              <FileName>Identification.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\Identification\Identification.lib</FilePath>
-            </File>
-            <File>
-              <FileName>calibration.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Identification\calibration.h</FilePath>
-            </File>
-            <File>
               <FileName>Estimation.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Identification\Estimation.h</FilePath>
+            </File>
+            <File>
+              <FileName>Identification.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\Identification\Identification.lib</FilePath>
             </File>
           </Files>
         </Group>

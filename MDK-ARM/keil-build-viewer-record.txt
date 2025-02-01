@@ -7,6 +7,7 @@
        246          0          0          4          0          0   bsp_timer.o
         60          0          0          0       3104          0   bsp_uart.o
        110          0          0          0          0          0   bsp_uart_queue.o
+       528          0          0         20          0          0   calibration.o
        986          0          0          0          0          0   controller.o
        196          0          0          0         20          0   dac.o
        544          0          0          0          0          0   display.o
@@ -19,7 +20,7 @@
        294          0          0         12         48          0   hwisr.o
       1240          0      14620          4          0          0   lcd.o
        208          0          0          0          0          0   main.o
-      2210          0          0         20        628          0   mc_task.o
+      2210          0          0         20        612          0   mc_task.o
        544          0          0          0          0          0   mgesc_calc.o
        918          0          0          0          0          0   mgfoc.o
        384          0          0          0        296          0   spi.o
@@ -47,15 +48,15 @@
       1236          0          0          0        476          0   tim.o
        344          0          0          0        340          0   usart.o
        546          0          0          0         20          0   user_config.o
-      4334          0       2052        172        456          0   Identification.lib
+      3798          0       2052        152        456          0   Identification.lib
 Object Totals
 
 Memory Map of the image
 
 	Load Region LR_IROM1 
 
-		Execution Region ER_IROM1 (Exec base: 0x08000000, Size: 0x0001000C, Max: 0x00080000, END)
+		Execution Region ER_IROM1 (Exec base: 0x08000000, Size: 0x00010004, Max: 0x00080000, END)
 
-		Execution Region RW_IRAM1 (Exec base: 0x20000000, Size: 0x00002058, Max: 0x00020000, END)
+		Execution Region RW_IRAM1 (Exec base: 0x20000000, Size: 0x00002048, Max: 0x00020000, END)
 
 Image component sizes

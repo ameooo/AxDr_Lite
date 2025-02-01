@@ -281,10 +281,11 @@ typedef struct
 
 	mc_state_e mc_state;
 	foc_run_mode_e foc_mode;
+	motor_calibration_state_e calib_state;
 
 	motor_controller_typedef controller;
 	motor_encoder_typedef encoder;
-	motor_calibrate_typedef calibrate;
+	// motor_calibrate_typedef calibrate;
 	motor_config_typedef config;
 	flux_observer_typedef observer;
 	scvm_observer_typedef scvm;
