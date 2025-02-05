@@ -235,7 +235,7 @@ void Get_Motor_Info(void)
 {
     static uint16_t send_count = 0;
     send_count++;
-    if (send_count >= 4)
+    if (send_count >= 5)
     {
         send_count = 0;
 
@@ -243,8 +243,12 @@ void Get_Motor_Info(void)
         // *(float *)&foc_data[0] = mc_motor.encoder.mech_vel;
         // *(float *)&foc_data[4] = mc_motor.scvm.theta;
         // *(float *)&foc_data[8] = mc_motor.encoder.elec_rad;
-        // memcpy(&foc_data[12], vofa_tail, 4);
-        // HAL_UART_Transmit_DMA(&huart3, foc_data, 16);
+
+        *(float *)&foc_data[0] = mc_motor.foc.vd;
+        *(float *)&foc_data[4] = mc_motor.foc.id;
+        *(float *)&foc_data[8] = mc_motor.foc.iq;
+        memcpy(&foc_data[12], vofa_tail, 4);
+        HAL_UART_Transmit_DMA(&huart3, foc_data, 16);
 
         // CDC_Transmit_FS(foc_data, 16);
     }

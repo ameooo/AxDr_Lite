@@ -3,7 +3,7 @@
  * @Date: 2024-12-27 18:06:37
  * @Author: 弈秋
  * @FirmwareVersion: v1.0.0.0
- * @LastEditTime: 2025-01-31 22:13:59
+ * @LastEditTime: 2025-02-05 21:02:59
  * @LastEditors: 弈秋仙贝
  */
 
@@ -15,8 +15,6 @@
 #include "user_config.h"
 #include "fast_math.h"
 
-#include "adc.h"
-#include "spi.h"
 
 /**
  * @brief motor phase
@@ -89,6 +87,7 @@ void mgesc_current_calc(mc_motor_typedef *tmotor, float curr_d, float curr_q)
     tfoc->vd = prop_d + tfoc->vd_int;
     tfoc->vq = prop_q + tfoc->vq_int;
 
+    // d-q axis decoupling
     // float dec_vd = 0.0;
     // float dec_vq = 0.0;
     // float dec_bemf = 0.0;
@@ -96,12 +95,12 @@ void mgesc_current_calc(mc_motor_typedef *tmotor, float curr_d, float curr_q)
     // dec_vq = tfoc->phase_vel * tmotor->config.motor_ld * tfoc->id_filter;
     // dec_bemf = tfoc->phase_vel * tmotor->config.motor_flux_linkage;
 
-    // tfoc->vd -= dec_vd;
-    // tfoc->vq += dec_vq + dec_bemf;
+    // tfoc->vd = tfoc->vd - (dec_vd * 0.6f);
+    // tfoc->vq = tfoc->vq + ((dec_vq + dec_bemf) * 0.6f);
 
     utils_saturate_vector_2d((float *)&tfoc->vd, (float *)&tfoc->vq, max_v_mag);
 
-    // 测试使用，用了限制最大输出电压
+    // 测试使用，限制最大输出电压
     // if (tfoc->vd > TEST_LIMIT_VOLTAGE)
     // {
     //     tfoc->vd = TEST_LIMIT_VOLTAGE;
@@ -126,9 +125,6 @@ void mgesc_current_calc(mc_motor_typedef *tmotor, float curr_d, float curr_q)
     // Calculate the duty cycles for all the phases. This also injects a zero modulation signal to
     // be able to fully utilize the bus voltage. See https://microchipdeveloper.com/mct5001:start
     const float pwm_normalize = (1.5f * MGESC_PWM_ARR) / tfoc->vbus_filter;
-    // const float voltage_normalize = 1.5f / tfoc->vbus_filter;
-    // float mod_alpha_raw = (tfoc->v_alpha * voltage_normalize);
-    // float mod_beta_raw = (tfoc->v_beta * voltage_normalize);
     foc_svm(tfoc->v_alpha, tfoc->v_beta, pwm_normalize, &tfoc->dtc_a, &tfoc->dtc_b, &tfoc->dtc_c, &tfoc->svm_sector);
 
     TIM1->CCR1 = tfoc->dtc_a;
@@ -166,11 +162,8 @@ void mgesc_voltage_output(mc_motor_typedef *tmotor, float volt_d, float volt_q)
 
     // Calculate the duty cycles for all the phases. This also injects a zero modulation signal to
     // be able to fully utilize the bus voltage. See https://microchipdeveloper.com/mct5001:start
-    // const float pwm_normalize = (1.5f * MGESC_PWM_ARR) / tfoc->vbus_filter;
-    const float voltage_normalize = 1.5f / tfoc->vbus_filter;
-    float mod_alpha_raw = (tfoc->v_alpha * voltage_normalize);
-    float mod_beta_raw = (tfoc->v_beta * voltage_normalize);
-    foc_svm(mod_alpha_raw, mod_beta_raw, MGESC_PWM_ARR, &tfoc->dtc_a, &tfoc->dtc_b, &tfoc->dtc_c, &tfoc->svm_sector);
+    const float pwm_normalize = (1.5f * MGESC_PWM_ARR) / tfoc->vbus_filter;
+    foc_svm(tfoc->v_alpha, tfoc->v_beta, pwm_normalize, &tfoc->dtc_a, &tfoc->dtc_b, &tfoc->dtc_c, &tfoc->svm_sector);
 
     TIM1->CCR1 = tfoc->dtc_a;
     if (tmotor->config.motor_spin_dir == DIR_FORWARD)

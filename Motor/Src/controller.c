@@ -3,7 +3,7 @@
  * @Date: 2024-10-26 14:36:21
  * @Author: 弈秋
  * @FirmwareVersion: v1.0.0.0
- * @LastEditTime: 2025-01-31 20:37:47
+ * @LastEditTime: 2025-02-05 20:15:01
  * @LastEditors: 弈秋仙贝
  */
 
@@ -80,8 +80,8 @@ void set_controller_close_mode(mc_motor_typedef *tmotor, motor_control_mode_e mo
     switch (mode)
     {
     case MOTOR_CONTROL_MODE_IDLE:
-		tcontroller->current_setpoint = 0.0f;
-		tcontroller->vel_integral = 0.0f;
+        tcontroller->current_setpoint = 0.0f;
+        tcontroller->vel_integral = 0.0f;
         input_reset(&tmotor->controller);
         break;
 

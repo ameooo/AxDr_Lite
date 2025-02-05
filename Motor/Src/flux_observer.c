@@ -3,7 +3,7 @@
  * @Date: 2025-01-13 19:01:43
  * @Author: 弈秋
  * @FirmwareVersion: v1.0.0.0
- * @LastEditTime: 2025-02-01 20:22:13
+ * @LastEditTime: 2025-02-05 20:21:15
  * @LastEditors: 弈秋仙贝
  */
 
@@ -19,6 +19,44 @@ float PhiActiveA, PhiActiveB; // α-β有效φ
 
 float flux_max = 0.0f;
 float flux_min = 0.0f;
+
+/**
+ * @brief 
+ * 
+ * @param tmotor 
+ */
+void scvm_observer_init(mc_motor_typedef *tmotor)
+{
+    tmotor->scvm.lambda = 2.0f;
+    tmotor->scvm.alpha_a = 1000.0f;
+    tmotor->scvm.alpha_b = 1.0f;
+
+    tmotor->scvm.theta = 0.0f;
+    tmotor->scvm.omega = 0.0f;
+}
+
+/**
+ * @brief 静态补偿电压模型，开环观测器，效果一般，优点是零速启动不用调参
+ *
+ * @param tmotor
+ */
+void scvm_observer_updata(mc_motor_typedef *tmotor)
+{
+    scvm_observer_typedef *tscvm = &tmotor->scvm;
+
+    float lambda_s = tscvm->lambda * SIGN(tscvm->omega);
+    tscvm->alpha_lpf = tscvm->alpha_a + tscvm->alpha_b * 2.0f * tscvm->lambda * ABS(tscvm->omega);
+    tscvm->emf_d = tmotor->foc.vd + tscvm->omega * tmotor->config.motor_lq * tmotor->foc.iq_ref;
+    tscvm->emf_q = tmotor->foc.vq - tmotor->config.motor_rs * tmotor->foc.iq_ref;
+    tscvm->theta += CURRENT_CONTROL_PERIOD * tscvm->omega;
+    tscvm->omega += CURRENT_CONTROL_PERIOD * tscvm->alpha_lpf *
+                    (((tscvm->emf_q - lambda_s * tscvm->emf_d) /
+                      (tmotor->config.motor_flux_linkage)) -
+                     tscvm->omega);
+    utils_norm_angle_rad(&tscvm->theta);
+    UTILS_LP_FAST(tscvm->estimate_elec_vel, tscvm->omega, 0.3f);
+    tscvm->estimate_mech_vel = tscvm->estimate_elec_vel / tmotor->config.motor_pole_pairs;
+}
 
 void flux_observer_init(mc_motor_typedef *tmotor)
 {
@@ -40,6 +78,11 @@ void flux_observer_init(mc_motor_typedef *tmotor)
     tmotor->observer.pll_ki = SQ(bandwidth);
 }
 
+/**
+ * @brief 有效磁链，测试效果一般
+ * 
+ * @param tmotor 
+ */
 void flux_observer(mc_motor_typedef *tmotor)
 {
     flux_observer_typedef *tobserver = &tmotor->observer;
@@ -49,7 +92,7 @@ void flux_observer(mc_motor_typedef *tmotor)
     // tobserver->Ialpha_filter = tmotor->foc.i_alpha;
     // tobserver->Ibeta_filter = tmotor->foc.i_beta;
 
-#if FLUX_OBSERVER_V1 // 开环模型，效果一般，速度稍高会发散
+#if FLUX_OBSERVER_V1 // 电压开环模型，效果一般，速度稍高会发散
     float Lambda_norm = (PhiVoltA * PhiVoltA + PhiVoltB * PhiVoltB);
     float PhiErr = Lambda_norm - (tobserver->PhiEstimate * tobserver->PhiEstimate);
 
@@ -147,35 +190,3 @@ void flux_observer(mc_motor_typedef *tmotor)
     tobserver->estimate_mech_vel = tobserver->estimate_elec_vel / tmotor->config.motor_pole_pairs;
 }
 
-void scvm_observer_init(mc_motor_typedef *tmotor)
-{
-    tmotor->scvm.lambda = 2.0f;
-    tmotor->scvm.alpha_a = 1000.0f;
-    tmotor->scvm.alpha_b = 1.0f;
-
-    tmotor->scvm.theta = 0.0f;
-    tmotor->scvm.omega = 0.0f;
-}
-
-/**
- * @brief 开环观测器，效果一般，优点是零速启动不用调参
- *
- * @param tmotor
- */
-void scvm_observer_updata(mc_motor_typedef *tmotor)
-{
-    scvm_observer_typedef *tscvm = &tmotor->scvm;
-
-    float lambda_s = tscvm->lambda * SIGN(tscvm->omega);
-    tscvm->alpha_lpf = tscvm->alpha_a + tscvm->alpha_b * 2.0f * tscvm->lambda * ABS(tscvm->omega);
-    tscvm->emf_d = tmotor->foc.vd + tscvm->omega * tmotor->config.motor_lq * tmotor->foc.iq_ref;
-    tscvm->emf_q = tmotor->foc.vq - tmotor->config.motor_rs * tmotor->foc.iq_ref;
-    tscvm->theta += CURRENT_CONTROL_PERIOD * tscvm->omega;
-    tscvm->omega += CURRENT_CONTROL_PERIOD * tscvm->alpha_lpf *
-                    (((tscvm->emf_q - lambda_s * tscvm->emf_d) /
-                      (tmotor->config.motor_flux_linkage)) -
-                     tscvm->omega);
-    utils_norm_angle_rad(&tscvm->theta);
-    UTILS_LP_FAST(tscvm->estimate_elec_vel, tscvm->omega, 0.3f);
-    tscvm->estimate_mech_vel = tscvm->estimate_elec_vel / tmotor->config.motor_pole_pairs;
-}

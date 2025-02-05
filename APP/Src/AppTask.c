@@ -3,7 +3,7 @@
  * @Date: 2024-12-29 23:53:21
  * @Author: 弈秋
  * @FirmwareVersion: v1.0.0.0
- * @LastEditTime: 2025-01-31 21:14:17
+ * @LastEditTime: 2025-02-05 20:56:33
  * @LastEditors: 弈秋仙贝
  */
 
@@ -190,7 +190,7 @@ static void Soft_Timer1_Callback(void *user_data)
             {
                 return;
             }
-			speed = (CurrentPR - 195) * 0.000256f * 3000.0f * RPM2RADPS; 
+			speed = (CurrentPR - 500) * 0.000285f * 2000.0f * RPM2RADPS; // 1/3500 * max_speed
             MC_SetControlMode(MOTOR_CONTROL_MODE_VELOCITY_RAMP, speed);
         }
         else

@@ -123,32 +123,32 @@ typedef struct
 
 // typedef struct
 // {
-	// motor_calibration_mode_e calib_mode;
-	// motor_calibration_state_e calib_state;
+// motor_calibration_mode_e calib_mode;
+// motor_calibration_state_e calib_state;
 
-	// uint16_t meas_step;
-	// uint32_t calib_count;
+// uint16_t meas_step;
+// uint32_t calib_count;
 
-	// calibrate Rs
-	// float calib_current;
-	// float calib_voltage_d;
-	// float calib_vd_half;
+// calibrate Rs
+// float calib_current;
+// float calib_voltage_d;
+// float calib_vd_half;
 
-	// // calibrate Ld Lq
-	// float current_magnitude;
-	// float current_phase;
-	// float meas_l_voltage_offset;
-	// float meas_bot_current_ld;
-	// float meas_top_current_ld;
-	// uint16_t meas_ld_count;
+// // calibrate Ld Lq
+// float current_magnitude;
+// float current_phase;
+// float meas_l_voltage_offset;
+// float meas_bot_current_ld;
+// float meas_top_current_ld;
+// uint16_t meas_ld_count;
 
-	// float meas_bot_current_lq;
-	// float meas_top_current_lq;
-	// uint16_t meas_lq_count;
+// float meas_bot_current_lq;
+// float meas_top_current_lq;
+// uint16_t meas_lq_count;
 
-	// // calibrate flux
-	// float meas_flux_current;
-	// float meas_flux_velocity;
+// // calibrate flux
+// float meas_flux_current;
+// float meas_flux_velocity;
 // } motor_calibrate_typedef;
 
 typedef struct
@@ -161,32 +161,30 @@ typedef struct
 	int current_sample_dir; // attention: errors can cause current takeoff
 	int motor_spin_dir;		// motor_spin_dir or encoder_dir
 	int encoder_dir;		// attention: same, errors can cause velocity takeoff
-	int encoder_offset;
-	int16_t adc_offsets[4];
-	uint32_t encoder_cpr;
-	float cpr_to_radian;
+	int encoder_offset;		// 编码器偏移量
+	int16_t adc_offsets[4]; // 相电流偏移量
+	uint32_t encoder_cpr;	// 编码器分辨率
+	float cpr_to_radian;	// 编码器分辨率转弧度
 
-	int motor_pole_pairs;
-	float motor_rs;
-	float motor_ld;		   // ld
-	float motor_lq;		   // lq
-	float motor_ldlq_diff; // lq - ld
-	float motor_flux_linkage;
-	float max_duty_cycle;
-	float calibrate_frequency; // [Hz]
-	float calibrate_current;   // [A]
-	float current_limit;	   // [A]
-	float velocity_limit;	   // [r/min]
-	float inertia;
-	float torque_constant; //
+	int motor_pole_pairs;	   // 极对数
+	float motor_rs;			   // 相电阻 [Ohm]
+	float motor_ld;			   // D轴电感 [H]
+	float motor_lq;			   // Q轴电感 [H]
+	float motor_ldlq_diff;	   // lq - ld
+	float motor_flux_linkage;  // 磁链 [Vs]
+	float max_duty_cycle;	   // 占空比限制
+	float calibrate_frequency; // 校准频率 [Hz]
+	float calibrate_current;   // 校准电流 [A]
+	float current_limit;	   // 最大电流 [A]
+	float velocity_limit;	   // 最大速度 [rad/s]
+	float inertia;			   // 转动惯量 [Nm^2]
+	float torque_constant;	   // 扭矩常数 [Nm/A]
 
 	// protect
 	float v_bus_limit;
 	float i_bus_limit;
 
 	// loop param
-	// float current_kp;
-	// float current_ki;
 	float d_current_kp;
 	float d_current_ki;
 	float q_current_kp;
@@ -253,7 +251,7 @@ typedef struct
 
 	float mech_pos, mech_vel;
 	float elec_pos, elec_vel;
-	
+
 	float ia, ib, ic, ibus;
 	float va, vb, vc, vbus;
 	float va_filter, vb_filter, vc_filter, vbus_filter;

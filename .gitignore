@@ -11,6 +11,7 @@
 *.lst
 *.ini
 *.scvd
+*.Pa
 
 # 仅在当前目录下忽略 TODO 文件， 但不包括子目录下的 subdir/TODO
 MDK-ARM/.vscode

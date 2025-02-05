@@ -3,7 +3,7 @@
  * @Date: 2024-10-26 14:36:21
  * @Author: 弈秋
  * @FirmwareVersion: v1.0.0.0
- * @LastEditTime: 2025-01-31 22:50:26
+ * @LastEditTime: 2025-02-05 21:12:05
  * @LastEditors: 弈秋仙贝
  */
 
@@ -81,7 +81,7 @@ void motor_config_init(motor_config_typedef *tconfig)
     tconfig->encoder_cpr = ENCODER_CPR;
     tconfig->cpr_to_radian = ENCODER_CPR_TO_RAD;
 
-    tconfig->motor_pole_pairs = 4; // DEFAULT_MOTOR_PP;
+    tconfig->motor_pole_pairs = DEFAULT_MOTOR_PP;
     tconfig->motor_rs = DEFAULT_MOTOR_R;
     tconfig->motor_ld = DEFAULT_MOTOR_Ld;
     tconfig->motor_lq = DEFAULT_MOTOR_Lq;
@@ -101,7 +101,7 @@ void motor_config_init(motor_config_typedef *tconfig)
     tconfig->q_current_ki = CURRENT_BANDWIDTH * M_2PI * tconfig->motor_rs;
 
     tconfig->velocty_kp = 0.09f;
-    tconfig->velocty_ki = 85.0f;
+    tconfig->velocty_ki = 88.0f;
     tconfig->position_kp = DEFAULT_POS_KP;
 
     tconfig->torque_ramp_rate = DEFAULT_TORQUE_RAMP_RATE;
