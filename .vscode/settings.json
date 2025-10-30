@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "user_config.h": "c",
+        "mgesc_state.h": "c",
+        "hwisr.h": "c",
+        "mc_task.h": "c"
+    }
+}

@@ -12,6 +12,7 @@
 *.ini
 *.scvd
 *.Pa
+*.lnk
 
 # 仅在当前目录下忽略 TODO 文件， 但不包括子目录下的 subdir/TODO
 MDK-ARM/.vscode
@@ -20,6 +21,6 @@ MDK-ARM/.vscode
 MDK-ARM/*.txt
 
 # 忽略 build/ 文件夹
-MGESC_AxDr_v2.0/
+AxDr_Lite/
 DebugConfig/
 RTE/
